@@ -4,13 +4,14 @@ name: Deployment on Multiple Env
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev, prod ]
   
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: self-hosted
+    outputs: ${{ steps.extract_branch.outputs.branch }} 
     steps:
       - name: Checking out 
         uses: actions/checkout@v2
@@ -31,6 +32,7 @@ jobs:
     runs-on: self-hosted
     environment: Development
     needs: build 
+    if: ${{ needs.build.outputs.branch == 'dev' }}
     steps:
       - name: Upload application
         uses: appleboy/scp-action@master
@@ -52,14 +54,15 @@ jobs:
                 /etc/init.d/yaml-poc stop
                 mv ~/source/target/yaml-poc.jar ~/source/target/yaml-poc-old.jar
                 mv ~/source/target/yaml-poc-latest.jar ~/source/target/yaml-poc.jar
-                rm -rf /etc/init.d/yaml-poc
-                ln -s -f ~/source/target/yaml-poc.jar /etc/init.d/yaml-poc
+                #rm -rf /etc/init.d/yaml-poc
+                #ln -s -f ~/source/target/yaml-poc.jar /etc/init.d/yaml-poc
                 /etc/init.d/yaml-poc start
   
   Prod:
     runs-on: self-hosted
     environment: Production
     needs: build
+    if: ${{ needs.build.outputs.branch == 'prod' }}
     steps:
       - name: Upload application to Prod
         uses: appleboy/scp-action@master
@@ -81,6 +84,6 @@ jobs:
                 /etc/init.d/yaml-poc stop
                 mv ~/source/target/yaml-poc.jar ~/source/target/yaml-poc-old.jar
                 mv ~/source/target/yaml-poc-latest.jar ~/source/target/yaml-poc.jar
-                rm -rf /etc/init.d/yaml-poc
-                ln -s -f ~/source/target/yaml-poc.jar /etc/init.d/yaml-poc
+                #rm -rf /etc/init.d/yaml-poc
+                #ln -s -f ~/source/target/yaml-poc.jar /etc/init.d/yaml-poc
                 /etc/init.d/yaml-poc start
