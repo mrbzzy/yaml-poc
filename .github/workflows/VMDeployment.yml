@@ -4,7 +4,7 @@ name: Deployment on Multiple Env
 
 on:
   push:
-    branches: [ dev, prod ]
+    branches: [ dev, prod, qa ]
   
   workflow_dispatch:
 
