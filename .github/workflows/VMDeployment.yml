@@ -132,4 +132,4 @@ jobs:
       - name: Upload application to test
         run: echo Uploaded artifact to test
       - name: Deploy on Test
-        run: Deployed on Test successfull
+        run: echo Deployed on Test successfull
