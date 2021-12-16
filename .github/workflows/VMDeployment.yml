@@ -4,7 +4,7 @@ name: Deployment on Multiple Env
 
 on:
   push:
-    branches: [ dev, prod ]
+    branches: [ dev, prod , qa ]
   
   workflow_dispatch:
 
@@ -86,6 +86,36 @@ jobs:
           host: ${{ secrets.PROD_IP_ADDRESS }}        
           username: ${{ secrets.PROD_AZURE_USERNAME }}      
           key: ${{ secrets.PROD_SSH_SECRET }}
+          port: 22
+          script: |
+                /etc/init.d/yaml-poc stop
+                mv ~/source/target/yaml-poc.jar ~/source/target/yaml-poc-old.jar
+                mv ~/source/target/yaml-poc-latest.jar ~/source/target/yaml-poc.jar
+                #rm -rf /etc/init.d/yaml-poc
+                #ln -s -f ~/source/target/yaml-poc.jar /etc/init.d/yaml-poc
+                /etc/init.d/yaml-poc start
+
+  qa:
+    runs-on: self-hosted
+    environment: QA
+    needs: build
+    if: ${{ needs.build.outputs.branch == 'qa' }}
+    steps:
+      - name: Upload application to Prod
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.QA_IP_ADDRESS }}        
+          username: ${{ secrets.QA_AZURE_USERNAME }}      
+          key: ${{ secrets.QA_SSH_SECRET }}
+          port: 22
+          source: "*"      
+          target: "~/source"
+      - name: Start Service on Prod
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.QA_IP_ADDRESS }}        
+          username: ${{ secrets.QA_AZURE_USERNAME }}      
+          key: ${{ secrets.QA_SSH_SECRET }}
           port: 22
           script: |
                 /etc/init.d/yaml-poc stop
