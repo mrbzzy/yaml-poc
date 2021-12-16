@@ -1,5 +1,7 @@
 # yaml-poc
 
+
+
 This POC depicts the use of Github Action with a sample Spring Boot app in order to deploy it on a Azure Repo.
 Docker integration steps are enabled but it only pushes the image to a specifc private docker registry. 
 PLEASE NOTE : Docker images is not pulled for deoployment Yet
