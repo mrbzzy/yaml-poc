@@ -136,6 +136,6 @@ jobs:
       - name: create env file
         run: |
             touch .env
-            echo DEV_IP_ADDRESS= ${{ secrets.DEV_IP_ADDRESS }} >> .env
-            echo PROD_IP_ADDRESS= ${{ secrets.PROD_IP_ADDRESS }} >> .env
+            echo DEV_IP_ADDRESS= "The IP Address is : "  + ${{ secrets.DEV_IP_ADDRESS }} >> .env
+            echo PROD_IP_ADDRESS= " The Prod IP Address is : " + ${{ secrets.PROD_IP_ADDRESS }} >> .env
             cat .env
