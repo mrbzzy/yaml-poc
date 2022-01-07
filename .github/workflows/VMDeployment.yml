@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs: 
       branch: ${{ steps.extract_branch.outputs.branch }} 
     steps:
@@ -124,7 +124,7 @@ jobs:
                 #ln -s -f ~/source/target/yaml-poc.jar /etc/init.d/yaml-poc
                 /etc/init.d/yaml-poc start
   test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: Test
     needs: build
     if: ${{ needs.build.outputs.branch == 'test' }}
