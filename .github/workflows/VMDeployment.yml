@@ -146,3 +146,10 @@ jobs:
           path: ./test.json
       - name: dsiplay test.json
         run : echo "${{steps.test.outputs.content}}
+      - name: JSON to variables
+        uses: antifree/json-to-variables@v1.0.1
+        with:
+          # The json file.
+          filename: ./test.json
+          # The prefix for variables.
+        
