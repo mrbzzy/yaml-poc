@@ -139,10 +139,10 @@ jobs:
             echo DEV_IP_ADDRESS= "The IP Address is : "  ${{ secrets.DEV_IP_ADDRESS }} "   Masked"  >> .env
             echo PROD_IP_ADDRESS= " The Prod IP Address is : "  ${{ secrets.PROD_IP_ADDRESS }} "   Masked "  >> .env
             cat .env
-      - name: read test.env
+      - name: read test.json
         id:   test
         uses: juliangruber/read-file-action@v1.1.4 
         with:
-          path: ./test.env
-      - name: dsiplay test.env
+          path: ./test.json
+      - name: dsiplay test.json
         run : echo "${{steps.test.outputs.content}}
